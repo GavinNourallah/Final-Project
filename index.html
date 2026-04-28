@@ -1,16 +1,230 @@
-<!doctype html>
+<!-- index.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Website Template</title>
-	<link rel="stylesheet" href="./assets/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SlopMart Store!</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
 
-	<h1>Website Template</h1>
-	<p>Fork and use this template repo (a.k.a. "boilerplate") for any web project</p>
-	<img src="assets/img/cat.jpg" alt="">
+<!--banner-->
+  <div class="top-banner text-center">
+    <span>🔥 FREE SHIPPING ON ALL ORDERS FOR THE NEXT 24 HOURS 🔥</span>
+  </div>
 
-	<script src="./assets/js/main.js"></script>
+<!--navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top custom-navbar">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">SlopMart!</a>
+
+      <form class="d-flex mx-auto w-50">
+        <input class="form-control me-2" type="search" placeholder="Search for the hottest garbage...">
+        <button class="btn btn-light">Search</button>
+      </form>
+
+      <div>
+        <button class="btn btn-outline-light me-2">Login</button>
+        <button class="btn btn-light">Cart</button>
+      </div>
+    </div>
+  </nav>
+
+<!--top buttons-->
+  <div class="container my-3">
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+      <button class="btn btn-light">Electronic Garbage!</button>
+      <button class="btn btn-light">Sweatshop Clothing!</button>
+      <button class="btn btn-light">Hot Deals!</button>
+      <button class="btn btn-light">Unless Plastic Junk!</button>
+      <button class="btn btn-light">Toys! "made by kids, for kids!"</button>
+      <button class="btn btn-light">More Slop!</button>
+    </div>
+  </div>
+
+<!--big banner-->
+  <div class="container">
+    <div class="hero-banner d-flex align-items-center justify-content-center text-white">
+      <h1>BUY BUY BUY!! CONSUME YOU SLOP! BUY MORE, BUY NOW!!</h1>
+    </div>
+  </div>
+
+<!--upper grid part-->
+  <div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>⚡ HOT DEALS! HOTTEST new deals! Deals hotter than the SUN!! LIMITED TIME ACT NOW ⚡</h3>
+      <div id="countdown" class="countdown">Loading...</div>
+    </div>
+
+    <div class="row g-3" id="flashDeals"></div>
+  </div>
+
+ <!--grid-->
+  <div class="container my-5">
+    <h3 class="mb-4">BUY MORE SLOP! MORE SLOP FOR YOU BELOW BUY BUY BUY!!!</h3>
+    <div class="row g-4" id="productGrid"></div>
+  </div>
+
+  <div class="text-center my-4" id="loader" style="display:none;">
+    <div class="spinner-border text-warning"></div>
+  </div>
+
+  <div id="popupContainer"></div>
+
+  <footer class="footer text-center py-4">
+    <p>2026 SlopMart!!!!!</p>
+  </footer>
+
+  <script> // Timer stuff :)
+    const countdownEl = document.getElementById("countdown");
+    let endTime = new Date().getTime() + (2 * 60 * 60 * 1000);
+
+    function updateCountdown() {
+      let now = new Date().getTime();
+      let distance = endTime - now;
+
+      if (distance <= 0) {
+        endTime = new Date().getTime() + (2 * 60 * 60 * 1000);
+      }
+
+      let hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+      let minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+      let seconds = Math.floor((distance % (1000*60)) / 1000);
+
+      countdownEl.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+
+    const productGrid = document.getElementById("productGrid");
+const flashDeals = document.getElementById("flashDeals");
+
+// IMAGES
+const productImages = [
+  "./assets/img/slop.png",
+  "./assets/img/slop2.png",
+  "./assets/img/slop3.png",
+  "./assets/img/slop4.png",
+  "./assets/img/slop5.png",
+  "./assets/img/slop6.png",
+  "./assets/img/slop7.png",
+  "./assets/img/slop8.png",
+  "./assets/img/slop9.png",
+  "./assets/img/slop10.png",
+  "./assets/img/slop11.png",
+  "./assets/img/slop12.png",
+  "./assets/img/slop13.png",
+  "./assets/img/slop14.png",
+  "./assets/img/slop15.png",
+  "./assets/img/slop16.png"
+];
+
+function getRandomImage() {
+  return productImages[Math.floor(Math.random() * productImages.length)];
+}
+
+function createCard(title, price) {
+  const img = getRandomImage();
+
+  return `
+    <div class="col-md-3">
+      <div class="card product-card">
+        <img src="${img}">
+        <div class="card-body">
+          <h6>${title}</h6>
+          <p class="price">$${price}</p>
+          <button class="btn btn-orange w-100">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function loadProducts(count = 8) {
+  for (let i = 0; i < count; i++) {
+    let price = (Math.random() * 20 + 1).toFixed(2);
+    productGrid.innerHTML += createCard("SLOP", price);
+  }
+}
+
+function loadFlashDeals() {
+  for (let i = 0; i < 4; i++) {
+    let price = (Math.random() * 10 + 1).toFixed(2);
+    flashDeals.innerHTML += createCard("HOT SLOP", price);
+  }
+}
+
+loadProducts();
+loadFlashDeals();
+
+window.addEventListener("scroll", () => {
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+    document.getElementById("loader").style.display = "block";
+
+    setTimeout(() => {
+      loadProducts(4);
+      document.getElementById("loader").style.display = "none";
+    }, 800);
+  }
+});
+
+    // Popups
+    const popupContainer = document.getElementById("popupContainer");
+
+    // Popup text
+    const popupMessages = [
+      "Only 3 left!",
+      "12 people are viewing this",
+      "Hurry! Selling fast",
+      "Limited stock available",
+      "Flash deal ending soon",
+      "Hot item right now"
+    ];
+
+    function getRandomMessage() {
+      return popupMessages[Math.floor(Math.random() * popupMessages.length)];
+    }
+
+    function createPopup() {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+
+      const message = getRandomMessage();
+
+      popup.innerHTML = `
+        <div class="popup-box">
+          <button class="close-btn">×</button>
+          <h5>Special Offer!</h5>
+          <p class="popup-message">${message}</p>
+          <button class="btn btn-orange accept-btn">Accept</button>
+        </div>
+      `;
+
+      const box = popup.querySelector(".popup-box");
+
+      const maxX = window.innerWidth - 320;
+      const maxY = window.innerHeight - 220;
+      const randX = Math.max(0, Math.random() * maxX);
+      const randY = Math.max(0, Math.random() * maxY);
+
+      box.style.position = "fixed";
+      box.style.left = randX + "px";
+      box.style.top = randY + "px";
+
+      popup.style.background = "rgba(0,0,0,0.5)";
+
+      popup.querySelector(".close-btn").onclick = () => popup.remove();
+      popup.querySelector(".accept-btn").onclick = () => popup.remove();
+
+      popupContainer.appendChild(popup);
+    }
+
+    createPopup();
+    setInterval(createPopup, 10000);
+  </script>
+
 </body>
 </html>
